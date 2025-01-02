@@ -1,29 +1,30 @@
 import { getProductById } from "@/pages/api/route";
 import Navbar from "@/pages/components/Navbar";
+import Head from "next/head";
 import Image from "next/image";
 
-export async function generateMetadata({ params }) {
-  const { id } = await params;
+// export async function generateMetadata({ params }) {
+//   const { id } = await params;
 
-  const product = await getProductById({ id });
+//   const product = await getProductById({ id });
 
-  return {
-    title: product.title,
-    description: product.description,
-    openGraph: {
-      title: product.title,
-      description: product.description,
-      images: [product.images[0]],
-      url: `https://seo-next-pink.vercel.app/products/${id}`,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: product.title,
-      description: product.description,
-      images: [product.images[0]],
-    },
-  };
-}
+//   return {
+//     title: product.title,
+//     description: product.description,
+//     openGraph: {
+//       title: product.title,
+//       description: product.description,
+//       images: [product.images[0]],
+//       url: `https://seo-next-pink.vercel.app/products/${id}`,
+//     },
+//     twitter: {
+//       card: "summary_large_image",
+//       title: product.title,
+//       description: product.description,
+//       images: [product.images[0]],
+//     },
+//   };
+// }
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
@@ -48,6 +49,21 @@ export default function ProductPage({ product }) {
 
   return (
     <>
+      <Head>
+        <title>{product?.title}</title>
+        <meta name="description" content={product?.description} />
+        <meta property="og:title" content={product?.title} />
+        <meta property="og:description" content={product?.description} />
+        <meta property="og:image" content={product?.images[0]} />
+        <meta
+          property="og:url"
+          content={`https://ssr-legacy-07.vercel.app/products/${product?.id}`}
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={product?.title} />
+        <meta name="twitter:description" content={product?.description} />
+        <meta name="twitter:image" content={product?.images[0]} />
+      </Head>
       <Navbar />
       <div className="container w-full h-full px-0 py-10 mx-auto lg:px-10">
         <div className="flex flex-col w-full h-full mt-10 md:flex-row">
